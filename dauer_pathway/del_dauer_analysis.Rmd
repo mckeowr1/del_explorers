@@ -1,0 +1,266 @@
+---
+title: "del_dauer_analysis"
+output: html_document
+---
+```{r echo = FALSE}
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(ggplot2)
+library(tidyverse)
+library(reshape2)
+library(igraph)
+```
+
+
+##Load up data and Fucntions for analysis
+
+###Load Variants and Dauer Genes + Filter for Variants in dauer genes 
+```{r}
+flat_file <- data.table::fread("WI.20210121.strain.annotation-GB-gene-impact-divergent-tempfix.tsv") 
+dauer_pathway <- data.table::fread("insulin_genes.tsv")
+WB_gene_list <- data.table::fread("wormbase_name_key.txt")
+  sample <- sample_n(WB_gene_list, 14)
+d_genes <- dauer_pathway$ens_gene
+random_genes <- sample$`WormBase Gene ID`
+
+dauer_var <- filter(flat_file, WORMBASE_ID %in% d_genes)
+random_var <- filter(flat_file, WORMBASE_ID %in% random_genes)
+```
+
+###Load function to do analysis - Outputs Chi Squared Contingency Table, Pairs Table, Pairs Plot
+
+```{r}
+var_distribution <- function(df, consequences){ 
+#Data Transformations  
+  filtered <- df %>% filter(CONSEQUENCE %in% consequences)
+  
+  strain_split <- filtered %>% separate_rows(Strains, sep = ",") 
+  
+  strain_group <- strain_split %>% group_by(Strains) %>%  
+    summarise(genes_aff = (GENE)) 
+  
+  contingency <- table(strain_group$Strains,
+                       strain_group$genes_aff) %>% as.data.frame.matrix() 
+#Chi-Squared Tests 
+
+  chi_table <- cbind(contingency, t(apply(contingency, 1, function(x) {
+    ch <- chisq.test(x)
+    c(unname(ch$statistic), ch$p.value)})))
+  #colnames(df1)[15:16] <- c('x-squared', 'p-value') #The number of columns will change 
+  #Add Some formatting?
+  
+#Chi-Squared Formatting
+
+  
+
+#Looking at Pairings 
+
+logical <- function(x){ ifelse( x > 0, 1 , 0) }
+logical_cont <- mutate_all(contingency, logical) #%>%  
+logical_cont$genes_affected <- rowSums(logical_cont)
+pairs <- filter(logical_cont, genes_affected > 1)
+
+#pairs <-  mutate(sum = rowSums(logical_cont))
+ #%>% filter(sum > 1)
+  
+#Heatmap of pairing by strains
+pairs_plot <- pairs %>% as.data.frame() %>% select(-genes_affected) %>% 
+  rownames_to_column() %>% 
+  gather(Column, Value, -rowname) 
+  
+plot <- ggplot(pairs_plot, aes(x = rowname, y = Column, fill = Value)) +
+  geom_tile() +
+  # scale_fill_gradientn(name = "", colors = terrain.colors(3)) +
+  scale_x_discrete(name = "") +
+  scale_y_discrete(name = "")  
+
+#Co-Occurence Matrix 
+
+melted_data <- melt(strain_group) #what does melt do? 
+w <- dcast(melted_data , genes_aff~Strains) # Make data go wider by gene's affected
+x <- as.matrix(w[,-1]) #Convert to a matrx 
+x[is.na(x)] <- 0
+x <- apply(x, 2,  function(x) as.numeric(x > 0)) 
+v_f <- x %*% t(x)
+diag(v_f) <- 0  #Set Diagonal to Zero
+dimnames(v_f) <- list(w[, 1], w[,1])
+v_f
+
+
+longData_f <- melt(v_f)
+longData_f<-longData_f[longData_f$value!=0,]
+
+v_plot <- ggplot(longData_f, aes(x = Var2, y = Var1)) + 
+  geom_tile(aes(fill=value)) + geom_text(aes(label = value))
+
+
+
+
+
+# melted_data <- melt(strain_group) #what does melt do? 
+# w <- dcast(melted_data, genes_aff~Strains) # Make data go wider by gene's affected
+# x <- as.matrix(w[,-1]) #Convert to a matrx 
+# x[is.na(x)] <- 0
+# x <- apply(x, 2,  function(x) as.numeric(x > 0)) 
+# co_table <- x %*% t(x)
+# diag(co_table) <- 0  #Set Diagonal to Zero
+# dimnames(co_table) <- list(w[, 1], w[,1])
+# 
+# co_table <- co_table %>% as.data.frame.matrix()
+
+
+#Plot Co-occurence matrix
+
+# longData <- melt(co_table)
+# longData<-longData[longData$value!=0,]
+# 
+# co_plot <- ggplot(longData, aes(x = Var2, y = Var1)) + 
+#   geom_tile(aes(fill=value)) + geom_text(aes(label = value))
+
+
+#List for outputs 
+out <- list()
+  out$chi_table <- chi_table 
+  out$paired_variants <- pairs
+  out$plot <- plot
+  out$co_plot <- v_f
+  out$co_occurence <- v_plot
+  
+ 
+  return(out)
+
+}
+```
+
+###Create Consequence Vectors - may need to be updated if there is a compound consequence in the data set
+```{r}
+high_impact <- c("stop_gain", "start_lost", "splice_donor", "splice_acceptor", "frameshift", "stop_lost")
+inframe_altering <- c( "inframe_deletion", "inframe_insertion",  "missense&inframe_altering")
+moderate_impact <- c("missense", "moderate_deletion", "moderate_insertion", "missense&inframe_altering", "splice_region")
+low_impact <- c("start_retained", "synonymous", "splice_region", "stop_retained")
+```
+
+
+##General Dauer Var Stats
+
+
+#High Impact Variants
+
+```{r warning = FALSE}
+high_analysis <- var_distribution(dauer_var, high_impact) 
+high_analysis$chi_table 
+high_analysis$paired_variants
+high_analysis$plot
+high_analysis$co_occurence
+high_analysis$co_plot
+```
+
+
+#Inframe Altering Impact Variants
+
+```{r}
+inframe_analysis <- var_distribution(dauer_var, inframe_altering) 
+inframe_analysis$chi_table 
+inframe_analysis$paired_variants
+inframe_analysis$plot
+inframe_analysis$co_occurence
+inframe_analysis$co_plot
+```
+
+#High and Inframe Altering
+
+```{r}
+high_inframe <- c(high_impact , inframe_altering)
+high_inframe_analysis <- var_distribution(dauer_var, high_inframe) 
+high_inframe_analysis$chi_table 
+high_inframe_analysis$paired_variants
+high_inframe_analysis$plot
+high_inframe_analysis$co_occurence
+high_inframe_analysis$co_plot
+```
+
+
+
+
+#Moderate Impact Variants 
+```{r}
+moderate_analysis <- var_distribution(dauer_var, moderate_impact) 
+moderate_analysis$chi_table 
+moderate_analysis$paired_variants
+moderate_analysis$plot
+moderate_analysis$co_occurence
+moderate_analysis$co_plot
+```
+
+
+
+##Missense BSCORE <-2 - There are no -4 Bscore Vars in Dauer Pathway
+```{r}
+bscore_dauer_var <- dauer_var %>% filter(BLOSUM <= -2)
+bscore_analysis <- var_distribution(bscore_dauer_var, moderate_impact)
+bscore_analysis$chi_table
+bscore_analysis$paired_variants
+bscore_analysis$plot
+bscore_analysis$co_occurence
+bscore_analysis$co_plot
+```
+
+
+
+##Random Moderate Impact
+###There are no High or inframe altering variants in the random data sets
+```{r}
+random_high_inframe <- var_distribution(random_var, moderate_impact)
+random_high_inframe$chi_table
+random_high_inframe$paired_variants
+random_high_inframe$plot
+random_high_inframe$co_occurence
+random_high_inframe$co_plot
+```
+
+
+
+##Classification of Del Variants
+
+```{r}
+
+hi_inframe_b2 <- dauer_var %>% filter(CONSEQUENCE == "missense" & BLOSUM <= -2 | CONSEQUENCE %in% inframe_altering | CONSEQUENCE %in% high_impact ) 
+all_con <- c(hi_inframe_b2$CONSEQUENCE) 
+hi_inframe_b2_analysis <- var_distribution(hi_inframe_b2, all_con)
+hi_inframe_b2_analysis$chi_table
+hi_inframe_b2_analysis$paired_variants
+hi_inframe_b2_analysis$plot
+hi_inframe_b2_analysis$co_occurence
+hi_inframe_b2_analysis$co_plot
+
+
+
+
+
+
+```
+
+
+
+
+```{r}
+hi_inframe_b2_random <- random_var %>% filter(CONSEQUENCE == "missense" & BLOSUM <= -2 | CONSEQUENCE %in% inframe_altering | CONSEQUENCE %in% high_impact ) 
+all_con <- c(hi_inframe_b2_random$CONSEQUENCE) 
+hi_inframe_b2_random <- var_distribution(hi_inframe_b2_random, all_con)
+hi_inframe_b2_random$chi_table
+hi_inframe_b2_random$paired_variants
+hi_inframe_b2_random$plot
+hi_inframe_b2_random$co_occurence
+hi_inframe_b2_random$co_plot
+```
+
+
+
+
+
+
+
+
+
+
