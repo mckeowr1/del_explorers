@@ -161,8 +161,11 @@ test_plot_1 <- test_plot %>%
           axis.title.x = element_text(face = "bold", size = 20),
           axis.title.y = element_text(face = "bold", size = 20),
           strip.text.x = element_text(face = "bold", size = 20),
-          panel.grid.major.x = element_blank()
+          panel.grid.major.x = element_blank(),
+          axis.text.x = element_text(size = 12),
+          axis.text.y = element_text(size = 18)
 
-
-                                                                )+
+                                                                  )+
     labs(x = "Genomic Position", y = "Number of Variants")
+
+#Export with with = 7 Size = 3.5
