@@ -23,15 +23,19 @@ dauer_var <- filter(flat_file, WORMBASE_ID %in% d_genes)
 ```{r}
 var_distribution <- function(df, consequences){
 #Data Transformations
-  filtered <- df %>% filter(CONSEQUENCE %in% consequences)
+  filtered <- df %>%
+  filter(CONSEQUENCE %in% consequences) #Filter by input consequence
 
-  strain_split <- filtered %>% separate_rows(Strains, sep = ",")
+  strain_split <- filtered %>%
+  separate_rows(Strains, sep = ",") #Parse strain rows
 
-  strain_group <- strain_split %>% group_by(Strains) %>%
+  strain_group <- strain_split %>% #List strain in 1 col and gene_aff in 1 col
+    group_by(Strains) %>%
     summarise(genes_aff = (GENE))
 
-  contingency <- table(strain_group$Strains,
-                       strain_group$genes_aff) %>% as.data.frame.matrix()
+  contingency <- table(strain_group$Strains, #1 row = 1 strain
+                       strain_group$genes_aff) %>% #1 col = 1 gene
+                       as.data.frame.matrix()
 #Chi-Squared Tests
 
   chi_table <- cbind(contingency, t(apply(contingency, 1, function(x) {
@@ -47,34 +51,36 @@ var_distribution <- function(df, consequences){
 #Looking at Pairings
 
 logical <- function(x){ ifelse( x > 0, 1 , 0) }
-logical_cont <- mutate_all(contingency, logical) #%>%
-logical_cont$genes_affected <- rowSums(logical_cont)
-pairs <- filter(logical_cont, genes_affected > 1)
+logical_cont <- mutate_all(contingency, logical) # Convert to Affected/Unaffected logic
+logical_cont$genes_affected <- rowSums(logical_cont) #Sum number of genes affected in each strain
+pairs <- filter(logical_cont, genes_affected > 1) #Subset strains w/ >1 gene affected
 
-#pairs <-  mutate(sum = rowSums(logical_cont))
- #%>% filter(sum > 1)
+
 
 #Heatmap of pairing by strains
-pairs_plot <- pairs %>% as.data.frame() %>% select(-genes_affected) %>%
-  rownames_to_column() %>%
-  gather(Column, Value, -rowname)
+pairs_plot <- pairs %>%
+  as.data.frame() %>%
+  select(-genes_affected) %>% #Remove sum column
+  rownames_to_column() %>% #Convert matrix rows to column names
+  gather(Column, Value, -rowname) #Older version of pivot longer, makes matrix plotable
 
-plot <- ggplot(pairs_plot, aes(x = rowname, y = Column, fill = Value)) +
+plot <- ggplot(pairs_plot, aes(x = rowname, #Strain
+                               y = Column, #Gene
+                               fill = Value)) + #Affected or unaffected
   geom_tile() +
-  # scale_fill_gradientn(name = "", colors = terrain.colors(3)) +
-  scale_x_discrete(name = "") +
-  scale_y_discrete(name = "")
+  theme(axis.text.x = element_text(angle = 90))
+
 
 #Co-Occurence Matrix
 
-melted_data <- melt(strain_group) #what does melt do?
-w <- dcast(melted_data , genes_aff~Strains) # Make data go wider by gene's affected
-x <- as.matrix(w[,-1]) #Convert to a matrx
-x[is.na(x)] <- 0
-x <- apply(x, 2,  function(x) as.numeric(x > 0))
-v_f <- x %*% t(x)
+melted_data <- melt(strain_group) #wide to long reshaping, may not be needed
+w <- dcast(melted_data , genes_aff~Strains) #Long to wide reshaping, strains as cols, genes as row
+x <- as.matrix(w[,-1]) #Convert to a matrx w/o 1st column
+x[is.na(x)] <- 0 #Replace any NA with zeros
+x <- apply(x, 2,  function(x) as.numeric(x > 0)) #Convert to logical data - Is this a silly step?
+v_f <- x %*% t(x) #multiply matrix by itself transposed
 diag(v_f) <- 0  #Set Diagonal to Zero
-dimnames(v_f) <- list(w[, 1], w[,1])
+dimnames(v_f) <- list(w[, 1], w[,1]) #Lable the matrix
 v_f
 
 
@@ -92,7 +98,7 @@ v_plot <- ggplot(longData_f, aes(x = Var2, y = Var1)) +
 # w <- dcast(melted_data, genes_aff~Strains) # Make data go wider by gene's affected
 # x <- as.matrix(w[,-1]) #Convert to a matrx
 # x[is.na(x)] <- 0
-# x <- apply(x, 2,  function(x) as.numeric(x > 0)) 
+# x <- apply(x, 2,  function(x) as.numeric(x > 0))
 # co_table <- x %*% t(x)
 # diag(co_table) <- 0  #Set Diagonal to Zero
 # dimnames(co_table) <- list(w[, 1], w[,1])
@@ -111,11 +117,11 @@ v_plot <- ggplot(longData_f, aes(x = Var2, y = Var1)) +
 
 #List for outputs
 out <- list()
-  out$chi_table <- chi_table
-  out$paired_variants <- pairs
-  out$plot <- plot
-  out$co_plot <- v_f
-  out$co_occurence <- v_plot
+  out$chi_table <- chi_table #Return Contingency table w/ Chi-squared values
+  out$paired_variants <- pairs #Return Strain by gene table w/ >1 gene affected
+  out$plot <- plot #Retirn Strain by gene table above plotted
+  out$co_plot <- v_f #Return Co-occurence matrix as DF
+  out$co_occurence <- v_plot #Return plot of co-occurence matrix
 
 
   return(out)
