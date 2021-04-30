@@ -1,0 +1,389 @@
+TREE_COLORS
+#use this template to define branch colors and styles, colored ranges and label colors/font styles/backgrounds
+#lines starting with a hash are comments and ignored during parsing
+
+#=================================================================#
+#                    MANDATORY SETTINGS                           #
+#=================================================================#
+#select the separator which is used to delimit the data below (TAB,SPACE or COMMA).This separator must be used throughout this file.
+
+#SEPARATOR TAB
+SEPARATOR SPACE
+#SEPARATOR COMMA
+
+#First 3 fields define the node, type and color
+#Possible types are:
+#'range': defines a colored range (colored background for labels/clade)
+#'clade': defines color/style for all branches in a clade
+#'branch': defines color/style for a single branch
+#'label': defines font color/style for the leaf label
+#'label_background': defines the leaf label background color
+
+#The following additional fields are required:
+#for 'range', field 4 defines the colored range label (used in the legend)
+
+#The following additional fields are optional:
+#for 'label', field 4 defines the font style ('normal',''bold', 'italic' or 'bold-italic') and field 5 defines the numeric scale factor for the font size (eg. with value 2, font size for that label will be 2x the standard size)
+#for 'clade' and 'branch', field 4 defines the branch style ('normal' or 'dashed') and field 5 defines the branch width scale factor (eg. with value 0.5, branch width for that clade will be 0.5 the standard width)
+
+#Internal tree nodes can be specified using IDs directly, or using the 'last common ancestor' method described in iTOL help pages
+#=================================================================#
+#       Actual data follows after the "DATA" keyword              #
+#=================================================================#
+DATA
+#NODE_ID TYPE COLOR LABEL_OR_STYLE SIZE_FACTOR
+BRC20067 range #6a329f
+BRC20263 range #6a329f
+CB4853 range #6a329f
+CB4854 range #6a329f
+CB4858 range #6a329f
+CX11254 range #6a329f
+CX11262 range #6a329f
+CX11271 range #6a329f
+CX11292 range #6a329f
+CX11314 range #6a329f
+DL238 range #6a329f
+ECA1069 range #6a329f
+ECA1074 range #6a329f
+ECA1185 range #6a329f
+ECA1186 range #6a329f
+ECA1187 range #6a329f
+ECA1191 range #6a329f
+ECA1192 range #6a329f
+ECA1193 range #6a329f
+ECA1194 range #6a329f
+ECA1195 range #6a329f
+ECA1196 range #6a329f
+ECA1202 range #6a329f
+ECA1206 range #6a329f
+ECA1208 range #6a329f
+ECA1212 range #6a329f
+ECA1216 range #6a329f
+ECA1223 range #6a329f
+ECA1225 range #6a329f
+ECA1228 range #6a329f
+ECA1229 range #6a329f
+ECA1232 range #6a329f
+ECA1237 range #6a329f
+ECA1238 range #6a329f
+ECA1240 range #6a329f
+ECA1242 range #6a329f
+ECA1247 range #6a329f
+ECA1251 range #6a329f
+ECA1252 range #6a329f
+ECA1253 range #6a329f
+ECA1261 range #6a329f
+ECA1276 range #6a329f
+ECA1278 range #6a329f
+ECA1281 range #6a329f
+ECA1283 range #6a329f
+ECA1284 range #6a329f
+ECA1286 range #6a329f
+ECA1287 range #6a329f
+ECA1288 range #6a329f
+ECA1289 range #6a329f
+ECA1293 range #6a329f
+ECA1316 range #6a329f
+ECA1409 range #6a329f
+ECA1413 range #6a329f
+ECA1493 range #6a329f
+ECA1693 range #6a329f
+ECA1713 range #6a329f
+ECA1717 range #6a329f
+ECA1725 range #6a329f
+ECA1751 range #6a329f
+ECA1757 range #6a329f
+ECA1761 range #6a329f
+ECA1769 range #6a329f
+ECA1793 range #6a329f
+ECA1815 range #6a329f
+ECA1821 range #6a329f
+ECA1825 range #6a329f
+ECA1843 range #6a329f
+ECA1851 range #6a329f
+ECA1885 range #6a329f
+ECA1891 range #6a329f
+ECA191 range #6a329f
+ECA1919 range #6a329f
+ECA1925 range #6a329f
+ECA1969 range #6a329f
+ECA1997 range #6a329f
+ECA2043 range #6a329f
+ECA2073 range #6a329f
+ECA2081 range #6a329f
+ECA2091 range #6a329f
+ECA2109 range #6a329f
+ECA2111 range #6a329f
+ECA2119 range #6a329f
+ECA2151 range #6a329f
+ECA2155 range #6a329f
+ECA2159 range #6a329f
+ECA2183 range #6a329f
+ECA2187 range #6a329f
+ECA2191 range #6a329f
+ECA2195 range #6a329f
+ECA2199 range #6a329f
+ECA2251 range #6a329f
+ECA2281 range #6a329f
+ECA2291 range #6a329f
+ECA2334 range #6a329f
+ECA2336 range #6a329f
+ECA2360 range #6a329f
+ECA2367 range #6a329f
+ECA2377 range #6a329f
+ECA2417 range #6a329f
+ECA2443 range #6a329f
+ECA2467 range #6a329f
+ECA2473 range #6a329f
+ECA2475 range #6a329f
+ECA2482 range #6a329f
+ECA2489 range #6a329f
+ECA2522 range #6a329f
+ECA2523 range #6a329f
+ECA2527 range #6a329f
+ECA2529 range #6a329f
+ECA2533 range #6a329f
+ECA2536 range #6a329f
+ECA2551 range #6a329f
+ECA2555 range #6a329f
+ECA2559 range #6a329f
+ECA2561 range #6a329f
+ECA2581 range #6a329f
+ECA2584 range #6a329f
+ECA2601 range #6a329f
+ECA2609 range #6a329f
+ECA2648 range #6a329f
+ECA2656 range #6a329f
+ECA2659 range #6a329f
+ECA2660 range #6a329f
+ECA2672 range #6a329f
+ECA2676 range #6a329f
+ECA347 range #6a329f
+ECA36 range #6a329f
+ECA363 range #6a329f
+ECA396 range #6a329f
+ECA592 range #6a329f
+ECA594 range #6a329f
+ECA640 range #6a329f
+ECA701 range #6a329f
+ECA722 range #6a329f
+ECA723 range #6a329f
+ECA730 range #6a329f
+ECA740 range #6a329f
+ECA741 range #6a329f
+ECA742 range #6a329f
+ECA743 range #6a329f
+ECA744 range #6a329f
+ECA746 range #6a329f
+ECA923 range #6a329f
+ECA928 range #6a329f
+ECA930 range #6a329f
+ED3005 range #6a329f
+ED3011 range #6a329f
+ED3040 range #6a329f
+ED3048 range #6a329f
+ED3052 range #6a329f
+EG4724 range #6a329f
+JU1491 range #6a329f
+JU1808 range #6a329f
+JU2001 range #6a329f
+JU2007 range #6a329f
+JU2016 range #6a329f
+JU2519 range #6a329f
+JU2522 range #6a329f
+JU2586 range #6a329f
+JU2811 range #6a329f
+JU2838 range #6a329f
+JU2853 range #6a329f
+JU2862 range #6a329f
+JU2866 range #6a329f
+JU2878 range #6a329f
+JU2879 range #6a329f
+JU3125 range #6a329f
+JU3127 range #6a329f
+JU3167 range #6a329f
+JU3169 range #6a329f
+JU3224 range #6a329f
+JU3226 range #6a329f
+JU367 range #6a329f
+JU4047 range #6a329f
+JU4073 range #6a329f
+JU4082 range #6a329f
+JU642 range #6a329f
+JU774 range #6a329f
+JU775 range #6a329f
+JU778 range #6a329f
+KR314 range #6a329f
+LKC34 range #6a329f
+MY1 range #6a329f
+MY10 range #6a329f
+MY16 range #6a329f
+MY18 range #6a329f
+MY23 range #6a329f
+MY2453 range #6a329f
+MY518 range #6a329f
+MY795 range #6a329f
+NIC1119 range #6a329f
+NIC1779 range #6a329f
+NIC1780 range #6a329f
+NIC1787 range #6a329f
+NIC1801 range #6a329f
+NIC1802 range #6a329f
+NIC1805 range #6a329f
+NIC1806 range #6a329f
+NIC1809 range #6a329f
+NIC1811 range #6a329f
+NIC231 range #6a329f
+NIC236 range #6a329f
+NIC251 range #6a329f
+NIC252 range #6a329f
+NIC256 range #6a329f
+NIC258 range #6a329f
+NIC259 range #6a329f
+NIC260 range #6a329f
+NIC261 range #6a329f
+NIC262 range #6a329f
+NIC266 range #6a329f
+NIC268 range #6a329f
+NIC271 range #6a329f
+NIC272 range #6a329f
+NIC274 range #6a329f
+NIC275 range #6a329f
+NIC276 range #6a329f
+NIC511 range #6a329f
+NIC514 range #6a329f
+QG2075 range #6a329f
+QG2813 range #6a329f
+QG2818 range #6a329f
+QG2823 range #6a329f
+QG2824 range #6a329f
+QG2825 range #6a329f
+QG2827 range #6a329f
+QG2832 range #6a329f
+QG2835 range #6a329f
+QG2836 range #6a329f
+QG2837 range #6a329f
+QG2841 range #6a329f
+QG2843 range #6a329f
+QG2850 range #6a329f
+QG2873 range #6a329f
+QG2874 range #6a329f
+QG2877 range #6a329f
+QG2932 range #6a329f
+QG4006 range #6a329f
+QG4010 range #6a329f
+QG4018 range #6a329f
+QG4138 range #6a329f
+QG4193 range #6a329f
+QG4228 range #6a329f
+QG536 range #6a329f
+QX1211 range #6a329f
+QX1212 range #6a329f
+QX1791 range #6a329f
+QX1792 range #6a329f
+TWN2530 range #6a329f
+TWN2542 range #6a329f
+WN2001 range #6a329f
+WN2068 range #6a329f
+XZ1513 range #6a329f
+XZ1514 range #6a329f
+XZ1516 range #6a329f
+XZ1734 range #6a329f
+XZ1735 range #6a329f
+XZ1756 range #6a329f
+CB4855 range #741b47
+CB4857 range #741b47
+CX11264 range #741b47
+CX11276 range #741b47
+CX11285 range #741b47
+CX11315 range #741b47
+DL226 range #741b47
+ECA1200 range #741b47
+ECA1255 range #741b47
+ECA1257 range #741b47
+ECA1260 range #741b47
+ECA1271 range #741b47
+ECA1805 range #741b47
+ECA1853 range #741b47
+ECA1875 range #741b47
+ECA1887 range #741b47
+ECA1889 range #741b47
+ECA189 range #741b47
+ECA1901 range #741b47
+ECA2332 range #741b47
+ECA2344 range #741b47
+ECA2350 range #741b47
+ECA2437 range #741b47
+ECA2554 range #741b47
+ECA2595 range #741b47
+ECA2612 range #741b47
+ECA348 range #741b47
+ECA349 range #741b47
+ECA372 range #741b47
+ECA593 range #741b47
+ECA710 range #741b47
+ECA724 range #741b47
+ECA738 range #741b47
+ECA745 range #741b47
+ED3046 range #741b47
+ED3049 range #741b47
+GXW1 range #741b47
+JR4305 range #741b47
+JU1400 range #741b47
+JU2017 range #741b47
+JU2131 range #741b47
+JU2478 range #741b47
+JU2534 range #741b47
+JU2619 range #741b47
+JU3225 range #741b47
+JU323 range #741b47
+JU751 range #741b47
+MY2585 range #741b47
+NIC1810 range #741b47
+NIC1812 range #741b47
+PB303 range #741b47
+PB306 range #741b47
+PS2025 range #741b47
+QG2838 range #741b47
+QG2846 range #741b47
+QG4080 range #741b47
+QG4226 range #741b47
+QG556 range #741b47
+QG557 range #741b47
+QX1233 range #741b47
+QX1793 range #741b47
+RC301 range #741b47
+WN2033 range #741b47
+XZ1672 range #741b47
+XZ2019 range #741b47
+XZ2020 range #741b47
+XZ2211 range #741b47
+
+
+
+
+#Examples
+#internal node with solid rangees colored blue and twice the standard width
+#9031|9606 clade #0000ff normal 2
+#internal node with dashed branches colored red and one half the standard width
+#601|340 clade #ff0000 dashed 0.5
+#a single internal branch colored green, dashed and 5 times the normal width
+#915|777 branch #00ff00 dashed 5
+
+#colored range covering all leaves of an internal node,  colored red and with label 'Eukaryota'
+#184922|9606 range #ff0000 Eukaryota
+#examples of colored ranges from iTOL's Tree of Life
+#2190|2287 range #aaffaa Archaea
+#623|1502 range #aaaaff Bacteria
+
+#leaf label for node 9606 will be displayed in green, bold and twice the regular font size
+#9606 label #00ff00 bold 2
+
+#leaf label for node 9031 will be displayed in yellow, bold italic and half the regular font size
+#9031 label #6a329f bold-italic 0.5
+
+#leaf label for node 8015 will be displayed in blue
+#8015 label #0000ff
+
+#leaf label for node 9606 will have a semi-transparent red background
+#9606 label_background rgba(255,0,0,0.5)
