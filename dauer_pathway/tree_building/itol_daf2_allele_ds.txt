@@ -12,7 +12,7 @@ SEPARATOR SPACE
 #SEPARATOR COMMA
 
 #label is used in the legend table (can be changed later)
-DATASET_LABEL alleles
+DATASET_LABEL Daf-2 Alleles
 
 #dataset color (can be changed later)
 COLOR #ff0000
@@ -39,13 +39,13 @@ COLOR #ff0000
 #5: left pointing triangle
 #6: checkmark
 
-#LEGEND_TITLE,Dataset legend
-#LEGEND_POSITION_X,100
-#LEGEND_POSITION_Y,100
-#LEGEND_SHAPES,1,2,3
-#LEGEND_COLORS,#ff0000,#00ff00,#0000ff
-#LEGEND_LABELS,value1,value2,value3
-#LEGEND_SHAPE_SCALES,1,1,0.5
+LEGEND_TITLE Daf-2 Alleles
+LEGEND_POSITION_X 50
+LEGEND_POSITION_Y 50
+LEGEND_SHAPES 1 2 3 4 6
+LEGEND_COLORS #ff0000 #00ff00 #0000ff #783f04 #6fa8dc
+LEGEND_LABELS III:2995992 III:3005783 III:3019596 III:3023143 III:3028693
+LEGEND_SHAPE_SCALES 1 1 1 1 1
 
 
 #largest symbol will be displayed with this size, others will be proportionally smaller.
