@@ -1,11 +1,15 @@
 #### Plot Strains x By Dauer Alleles ###
 #### Plot Strains x Daf-2 & Akt-2 Alleles ###
 
-
+#Impact Classifications
+high_impact <- c("stop_gain", "start_lost", "splice_donor", "splice_acceptor", "frameshift", "stop_lost")
+inframe_altering <- c( "inframe_deletion", "inframe_insertion",  "missense&inframe_altering")
+moderate_impact <- c("missense", "moderate_deletion", "moderate_insertion", "missense&inframe_altering", "splice_region")
+low_impact <- c("start_retained", "synonymous", "splice_region", "stop_retained")
 ####Subset data from flat file####
 
 #Load Flat file
-flat_file <- data.table::fread("WI.20210121.strain.annotation-GB-gene-impact-divergent-tempfix.tsv")
+flat_file <- data.table::fread("WI.20210121.strain-annotation.bcsq.tsv")
 
 #Load list of dauer genes
 dauer_pathway <- data.table::fread("insulin_genes.tsv")

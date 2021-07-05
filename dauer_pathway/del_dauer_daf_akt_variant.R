@@ -77,7 +77,7 @@ akt2_hi_by_var <- akt2_hi %>%
   group_by(CHROM.POS, REF.ALT) %>% #Group By Position and Allele
   nest() %>%
   mutate(Cons = sapply(data, prin_con)) %>%  #Print the predicted consequence for each haplotype
-  mutate(TRANSCRIPT_DISTRIBUTION = sapply(data, transcript_check)) %>% #if a transcript has one transcript with more variants
+  #mutate(TRANSCRIPT_DISTRIBUTION = sapply(data, transcript_check)) %>% #if a transcript has one transcript with more variants
   mutate(TRANSCRIPTS = sapply(data, prin_transcripts)) %>% #Print the transcripts to a string
   mutate(Strains_AFFECTED = sapply(data, prin_strains)) %>% #Print Strains Affected
   mutate(DIVERGENT = sapply(data, divergent_check)) %>% #If divergent region occurs in any Isotype at that Pos
@@ -95,11 +95,18 @@ daf_hi_by_var <- daf2_hi %>%
   group_by(CHROM.POS, REF.ALT) %>%
   nest() %>%
   mutate(Cons = sapply(data, prin_con)) %>%  #Print the predicted consequence for each haplotype
-  mutate(TRANSCRIPT_DISTRIBUTION = sapply(data, transcript_check)) %>%
+  #mutate(TRANSCRIPT_DISTRIBUTION = sapply(data, transcript_check)) %>%
   mutate(TRANSCRIPTS = sapply(data, prin_transcripts)) %>% #Check if a transcript has one transcript with more variants
   mutate(Strains_AFFECTED = sapply(data, prin_strains)) %>%
   mutate(DIVERGENT = sapply(data, divergent_check)) %>%
   mutate(Num_Strains = sapply(data, count_strains))
+
+
+
+
+akt2_hi_by_var %>% select(-data) %>% write_tsv( "akt_hi_by_var.tsv" )
+daf_hi_by_var %>% select(-data) %>% write_tsv( "daf_hi_by_var.tsv" )
+
 
 
 ## Variant Analysis Functions ##
