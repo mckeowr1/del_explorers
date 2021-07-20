@@ -1,3 +1,7 @@
+#Dont use this script, use  Genotype Matrix from Cegwas
+
+
+
 #Script to go from VCF to Genotype Matrix for DAF-2 AKT-2 Paired alleles
 #CHROM POS REF ALT
 
