@@ -24,7 +24,7 @@ source activate orthofinder_env
 # Path to [FASTA_DIR] can be full or relative
 # [FASTA_DIR] contains all your sample FASTAs + GOI FASTAs
 
-orthofinder -f /projects/b1059/projects/Ryan/conservation/protein_fasta -og -t 12
+orthofinder -f /projects/b1059/projects/Ryan/conservation/[protein_fasta] -og -t 12
 
 # Orthofinder results will be in ~/[FASTA_DIR]/OrthoFinder/Results[DATE]
 # ~/Results[DATE]/Orthogroups/Orthogorups.txt contains all orthogroup IDs and the gene IDs within each orthogroup
