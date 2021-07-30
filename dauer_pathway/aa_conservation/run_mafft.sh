@@ -15,7 +15,7 @@ source activate	orthofinder_env
 # Run MAFFT on [ORTHO_ID].fa
 # Path to [ORTHO_ID].fa] can be full or relative
 
-mafft -auto /projects/b1059/projects/Ryan/conservation/protein_fasta/OrthoFinder/Results_Jul20/Orthogroup_Sequences/OG0000001.fa > OG0000001.mafft
+mafft --auto /projects/b1059/projects/Ryan/conservation/protein_fasta/OrthoFinder/Results_Jul20/Orthogroup_Sequences/OG0000001.fa > OG0000001.mafft
 
 # Run IQTREE
 # Path to [ORTHO_ID].mafft can be full or relative
